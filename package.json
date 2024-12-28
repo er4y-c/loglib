@@ -1,0 +1,27 @@
+{
+  "name": "loglib",
+  "version": "0.0.1",
+  "description": "A logging library for Node.js projects",
+  "main": "lib/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/er4y-c/loglib.git"
+  },
+  "keywords": [
+    "logging"
+  ],
+  "author": "Eray Aynacı",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/er4y-c/loglib/issues"
+  },
+  "homepage": "https://github.com/er4y-c/loglib#readme",
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  }
+}

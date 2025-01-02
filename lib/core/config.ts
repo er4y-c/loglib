@@ -1,26 +1,19 @@
-import * as fs from 'fs';
+import * as fs from "fs";
 
 import { LogLevel } from "../utils/level";
-import {
-  RollingSizeOptions,
-  RollingTimeOptions
-} from "../utils/rolling";
+import { RollingSizeOptions, RollingTimeOptions } from "../utils/rolling";
 
-import {
-  RollingConfigProps,
-  LogConfigProps
-} from "../types";
-
+import { RollingConfigProps, LogConfigProps } from "../types";
 
 export class RollingConfig {
   #timeThreshold = RollingTimeOptions.Daily;
   #sizeThreshold = RollingSizeOptions.FiveMB;
 
-  static withDefaults() {
+  static withDefaults(): RollingConfig {
     return new RollingConfig();
   }
 
-  withTimeThreshold(timeThreshold: number) {
+  withTimeThreshold(timeThreshold: number): RollingConfig {
     if (!Object.values(RollingTimeOptions).includes(timeThreshold)) {
       throw new Error("Invalid time threshold value");
     }
@@ -28,7 +21,7 @@ export class RollingConfig {
     return this;
   }
 
-  withSizeThreshold(sizeThreshold: number) {
+  withSizeThreshold(sizeThreshold: number): RollingConfig {
     if (!Object.values(RollingSizeOptions).includes(sizeThreshold)) {
       throw new Error("Invalid size threshold value");
     }
@@ -36,14 +29,14 @@ export class RollingConfig {
     return this;
   }
 
-  static jsonToConfig(json: RollingConfigProps) {
-    let config = new RollingConfig();
-    Object.keys(json).forEach(key => {
+  static jsonToConfig(json: RollingConfigProps): RollingConfig {
+    const config = new RollingConfig();
+    Object.keys(json).forEach((key) => {
       switch (key) {
-        case 'timeThreshold':
+        case "timeThreshold":
           config.withTimeThreshold(json[key]);
           break;
-        case 'sizeThreshold':
+        case "sizeThreshold":
           config.withSizeThreshold(json[key]);
           break;
         default:
@@ -52,30 +45,37 @@ export class RollingConfig {
     });
     return config;
   }
+
+  static toJson(config: RollingConfig): RollingConfigProps {
+    return {
+      timeThreshold: config.#timeThreshold,
+      sizeThreshold: config.#sizeThreshold,
+    };
+  }
 }
 
 export class LogConfig {
   #level = LogLevel.Debug;
-  #filePrefix = 'Loglib_';
+  #filePrefix = "Loglib_";
   #rollingConfig = RollingConfig.withDefaults();
 
-  get level() {
+  get level(): LogLevel {
     return this.#level;
   }
 
-  get rollingConfig() {
+  get rollingConfig(): RollingConfig {
     return this.#rollingConfig;
   }
 
-  get filePrefix() {
+  get filePrefix(): string {
     return this.#filePrefix;
   }
 
-  static withDefaults() {
+  static withDefaults(): LogConfig {
     return new LogConfig();
   }
 
-  withLogLevel(level: LogLevel) {
+  withLogLevel(level: LogLevel): LogConfig {
     if (!Object.values(LogLevel).includes(level)) {
       throw new Error("Invalid log level value");
     }
@@ -83,27 +83,27 @@ export class LogConfig {
     return this;
   }
 
-  withFilePrefix(prefix: string) {
+  withFilePrefix(prefix: string): LogConfig {
     this.#filePrefix = prefix;
     return this;
   }
 
-  withRollingConfig(config: RollingConfigProps) {
+  withRollingConfig(config: RollingConfigProps): LogConfig {
     this.#rollingConfig = RollingConfig.jsonToConfig(config);
     return this;
   }
 
-  static jsonToConfig(json: LogConfigProps) {
-    let config = new LogConfig();
-    Object.keys(json).forEach(key => {
+  static jsonToConfig(json: LogConfigProps): LogConfig {
+    const config = new LogConfig();
+    Object.keys(json).forEach((key) => {
       switch (key) {
-        case 'level':
+        case "level":
           config.withLogLevel(json[key]);
           break;
-        case 'filePrefix':
+        case "filePrefix":
           config.withFilePrefix(json[key]);
           break;
-        case 'rollingConfig':
+        case "rollingConfig":
           config.withRollingConfig(json[key]);
           break;
         default:
@@ -114,7 +114,7 @@ export class LogConfig {
   }
 
   static fromConfigFile(filePath: string): LogConfig {
-    const fileContent = fs.readFileSync(filePath, 'utf8');
+    const fileContent = fs.readFileSync(filePath, "utf8");
     return LogConfig.jsonToConfig(JSON.parse(fileContent));
   }
 }

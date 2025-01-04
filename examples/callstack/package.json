@@ -1,5 +1,5 @@
 {
-  "name": "loglib-from-file-example",
+  "name": "loglib-callstack-example",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "author": "Eray Aynacı <eray.aynaci@ogr.sakarya.edu.tr>",
   "license": "MIT",
-  "description": "A starter app for Loglib",
+  "description": "A callstack example for Loglib",
   "devDependencies": {
     "tsx": "^4.19.2"
   }

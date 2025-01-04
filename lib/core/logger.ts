@@ -3,7 +3,7 @@ import path from "path";
 
 import { LogConfig } from "./config";
 import { LogLevel } from "../utils/level";
-import { directoryChecker } from "../utils/helpers";
+import { directoryChecker, getCallerInfo } from "../utils/helpers";
 
 export class Logger {
   #config: LogConfig;
@@ -41,7 +41,9 @@ export class Logger {
     if (logLevel < this.#config.level || !this.#fileHandler) {
       return;
     }
-    const logMessage = `${LogLevel.toString(logLevel)}: ${message}\n`;
+    const date_iso = new Date().toISOString();
+    const log_level_string = LogLevel.toString(logLevel);
+    const logMessage = `[${date_iso}] [${log_level_string}]: ${getCallerInfo()} ${message}\n`;
     await this.#fileHandler.write(logMessage);
   }
 

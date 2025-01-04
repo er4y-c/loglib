@@ -10,3 +10,16 @@ export function directoryChecker(pathDir: string): string {
 
   return logDir;
 }
+
+export function getCallerInfo(): string {
+  const stack = new Error().stack;
+  if (!stack) {
+    return "";
+  }
+  const stackLines = stack.split("\n");
+  if (stackLines.length < 4) {
+    return "";
+  }
+  const callInfo = stackLines[3].trim();
+  return callInfo;
+}

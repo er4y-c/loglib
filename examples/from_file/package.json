@@ -1,0 +1,15 @@
+{
+  "name": "loglib-from-file-example",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsx src/app.ts"
+  },
+  "author": "Eray Aynacı <eray.aynaci@ogr.sakarya.edu.tr>",
+  "license": "MIT",
+  "description": "A starter app for Salute-Gate",
+  "devDependencies": {
+    "tsx": "^4.19.2"
+  }
+}

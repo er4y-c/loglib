@@ -1,5 +1,5 @@
 {
-  "level": 1,
+  "level": 3,
   "filePrefix": "Loglib_",
   "rollingConfig": {
     "sizeThreshold": 10485760,

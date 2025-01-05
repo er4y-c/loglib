@@ -14,6 +14,7 @@ export class Logger {
   }
 
   async init(): Promise<void> {
+    // Initialize log file handler a d create log file directory if not exists
     const logDir = directoryChecker("logs");
     const filename = `${this.#config.filePrefix}${new Date()
       .toISOString()
@@ -37,14 +38,41 @@ export class Logger {
     return this.#config.filePrefix;
   }
 
-  async #log(message: string, logLevel: LogLevel): Promise<void> {
-    if (logLevel < this.#config.level || !this.#fileHandler) {
+  async #rollingCheck(): Promise<void> {
+    if (!this.#fileHandler) {
       return;
     }
+    const { sizeThreshold, timeThreshold } = this.#config.rollingConfig;
+
+    const { size, birthtimeMs } = await this.#fileHandler.stat();
+    const current_time = new Date().getTime();
+
+    // If rolling is needed, close the current file and initialize a new file handler
+    if (
+      size >= sizeThreshold ||
+      current_time - birthtimeMs >= timeThreshold * 1000
+    ) {
+      await this.#fileHandler.close();
+      await this.init();
+    }
+  }
+
+  async #logWriter(message: string, logLevel: LogLevel): Promise<void> {
     const date_iso = new Date().toISOString();
     const log_level_string = LogLevel.toString(logLevel);
     const logMessage = `[${date_iso}] [${log_level_string}]: ${getCallerInfo()} ${message}\n`;
-    await this.#fileHandler.write(logMessage);
+    await this.#fileHandler?.write(logMessage);
+  }
+
+  async #log(message: string, logLevel: LogLevel): Promise<void> {
+    // Check logging level
+    if (logLevel < this.#config.level || !this.#fileHandler) {
+      return;
+    }
+    // Write log message to file
+    await this.#logWriter(message, logLevel);
+    // Check if rolling is needed
+    await this.#rollingCheck();
   }
 
   debug(message: string): void {

@@ -17,9 +17,9 @@ export function getCallerInfo(): string {
     return "";
   }
   const stackLines = stack.split("\n");
-  if (stackLines.length < 4) {
+  if (stackLines.length < 6) {
     return "";
   }
-  const callInfo = stackLines[3].trim();
+  const callInfo = stackLines[5].trim();
   return callInfo;
 }

@@ -46,11 +46,12 @@ export class RollingConfig {
     return config;
   }
 
-  static toJson(config: RollingConfig): RollingConfigProps {
-    return {
-      timeThreshold: config.#timeThreshold,
-      sizeThreshold: config.#sizeThreshold,
-    };
+  get timeThreshold(): number {
+    return this.#timeThreshold;
+  }
+
+  get sizeThreshold(): number {
+    return this.#sizeThreshold;
   }
 }
 

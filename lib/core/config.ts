@@ -6,8 +6,8 @@ import { RollingSizeOptions, RollingTimeOptions } from "../utils/rolling";
 import { RollingConfigProps, LogConfigProps } from "../types";
 
 export class RollingConfig {
-  #timeThreshold = RollingTimeOptions.Daily;
-  #sizeThreshold = RollingSizeOptions.FiveMB;
+  private _timeThreshold = RollingTimeOptions.Daily;
+  private _sizeThreshold = RollingSizeOptions.FiveMB;
 
   static withDefaults(): RollingConfig {
     return new RollingConfig();
@@ -17,7 +17,7 @@ export class RollingConfig {
     if (!Object.values(RollingTimeOptions).includes(timeThreshold)) {
       throw new Error("Invalid time threshold value");
     }
-    this.#timeThreshold = timeThreshold;
+    this._timeThreshold = timeThreshold;
     return this;
   }
 
@@ -25,7 +25,7 @@ export class RollingConfig {
     if (!Object.values(RollingSizeOptions).includes(sizeThreshold)) {
       throw new Error("Invalid size threshold value");
     }
-    this.#sizeThreshold = sizeThreshold;
+    this._sizeThreshold = sizeThreshold;
     return this;
   }
 
@@ -47,11 +47,11 @@ export class RollingConfig {
   }
 
   get timeThreshold(): number {
-    return this.#timeThreshold;
+    return this._timeThreshold;
   }
 
   get sizeThreshold(): number {
-    return this.#sizeThreshold;
+    return this._sizeThreshold;
   }
 }
 
